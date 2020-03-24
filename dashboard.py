@@ -38,17 +38,17 @@ def draw_nubers_n_hexes(down_speed, up_speed, ping, canvas, font):
     canvas.polygon(generate_hexagon(center, radius), outline=0)
     writeLog(f"D:{down_speed} U:{up_speed} P:{ping}")
 
-    down = open("./live_results/down", "w+")
-    up = open("./live_results/up", "w+")
-    ping = open("./live_results/ping", "w+")
+    down_file = open("./live_results/down", "w+")
+    up_file = open("./live_results/up", "w+")
+    ping_file = open("./live_results/ping", "w+")
 
-    down.write(f"{down_speed}")
-    up.write(f"{up_speed}")
-    ping.write(f"{ping}")
+    down_file.write(f"{down_speed}")
+    up_file.write(f"{up_speed}")
+    ping_file.write(f"{ping}")
 
-    down.close()
-    up.close()
-    ping.close()
+    down_file.close()
+    up_file.close()
+    ping_file.close()
 
 def network_speed_test():
     writeLog(f"Begin network speed test")
@@ -146,7 +146,7 @@ def writeLog(text):
 # Entry point of the program
 if __name__ == '__main__':
     writeLog("Program start")
-    writeLog(f"Speedtest delay is {speedtest_delay}")
+    writeLog(f"Speedtest delay is {speedtest_delay} seconds, or {speedtest_delay/60.0} minutes")
     EXECUTION_PERIOD_S = speedtest_delay
 
     # Network measumenet queue
@@ -178,9 +178,9 @@ if __name__ == '__main__':
     starttime = time.time() - EXECUTION_PERIOD_S
 
     while True:
-        download_string = "----"
-        upload_string = "----"
-        ping_string = "--"
+        download_string = ""
+        upload_string = ""
+        ping_string = ""
 
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, height, width), outline=1, fill=1)
