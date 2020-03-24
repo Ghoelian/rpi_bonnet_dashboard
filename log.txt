@@ -523,3 +523,43 @@
 2020-03-24 11:53:47.439661 - Drawing current queue to graph
 2020-03-24 11:53:47.440667 - [<speedtest.Speedtest object at 0x75bd5490>, <speedtest.Speedtest object at 0x74d36890>]
 2020-03-24 11:53:47.441457 - ------------------------------
+2020-03-24 11:54:04.142994 - Begin network speed test
+2020-03-24 11:54:28.242015 - Finish network speed test
+2020-03-24 11:54:28.245162 - Begin drawing numbers
+2020-03-24 11:54:28.258691 - D:90.35 U:31.39 P:12
+2020-03-24 11:54:28.259658 - Begin drawing network graph
+2020-03-24 11:54:28.261092 - Drawing current queue to graph
+2020-03-24 11:54:28.261782 - [<speedtest.Speedtest object at 0x75bd5490>, <speedtest.Speedtest object at 0x74d36890>, <speedtest.Speedtest object at 0x74416890>]
+2020-03-24 11:54:28.262229 - ------------------------------
+2020-03-24 11:54:44.955317 - Begin network speed test
+2020-03-24 11:55:08.758486 - Finish network speed test
+2020-03-24 11:55:08.759982 - Begin drawing numbers
+2020-03-24 11:55:08.771343 - D:86.66 U:32.31 P:12
+2020-03-24 11:55:08.772109 - Begin drawing network graph
+2020-03-24 11:55:08.773324 - Drawing current queue to graph
+2020-03-24 11:55:08.774225 - [<speedtest.Speedtest object at 0x75bd5490>, <speedtest.Speedtest object at 0x74d36890>, <speedtest.Speedtest object at 0x74416890>, <speedtest.Speedtest object at 0x73d53670>]
+2020-03-24 11:55:08.775093 - ------------------------------
+2020-03-24 11:55:25.476216 - Begin network speed test
+2020-03-24 11:55:52.129033 - Finish network speed test
+2020-03-24 11:55:52.130347 - Begin drawing numbers
+2020-03-24 11:55:52.140951 - D:87.19 U:31.25 P:12
+2020-03-24 11:55:52.141672 - Begin drawing network graph
+2020-03-24 11:55:52.142666 - Drawing current queue to graph
+2020-03-24 11:55:52.143230 - [<speedtest.Speedtest object at 0x75bd5490>, <speedtest.Speedtest object at 0x74d36890>, <speedtest.Speedtest object at 0x74416890>, <speedtest.Speedtest object at 0x73d53670>, <speedtest.Speedtest object at 0x7369c850>]
+2020-03-24 11:55:52.143675 - ------------------------------
+2020-03-24 11:56:08.845686 - Begin network speed test
+2020-03-24 11:56:32.049172 - Finish network speed test
+2020-03-24 11:56:32.050405 - Begin drawing numbers
+2020-03-24 11:56:32.062191 - D:87.49 U:31.96 P:12
+2020-03-24 11:56:32.062891 - Begin drawing network graph
+2020-03-24 11:56:32.063913 - Drawing current queue to graph
+2020-03-24 11:56:32.064593 - [<speedtest.Speedtest object at 0x75bd5490>, <speedtest.Speedtest object at 0x74d36890>, <speedtest.Speedtest object at 0x74416890>, <speedtest.Speedtest object at 0x73d53670>, <speedtest.Speedtest object at 0x7369c850>, <speedtest.Speedtest object at 0x72eb09d0>]
+2020-03-24 11:56:32.065179 - ------------------------------
+2020-03-24 11:56:48.770648 - Begin network speed test
+2020-03-24 11:57:12.311933 - Finish network speed test
+2020-03-24 11:57:12.314287 - Begin drawing numbers
+2020-03-24 11:57:12.330881 - D:86.08 U:31.82 P:12
+2020-03-24 11:57:12.331656 - Begin drawing network graph
+2020-03-24 11:57:12.332679 - Drawing current queue to graph
+2020-03-24 11:57:12.333246 - [<speedtest.Speedtest object at 0x75bd5490>, <speedtest.Speedtest object at 0x74d36890>, <speedtest.Speedtest object at 0x74416890>, <speedtest.Speedtest object at 0x73d53670>, <speedtest.Speedtest object at 0x7369c850>, <speedtest.Speedtest object at 0x72eb09d0>, <speedtest.Speedtest object at 0x72bbb850>]
+2020-03-24 11:57:12.333707 - ------------------------------
