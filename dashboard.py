@@ -135,7 +135,7 @@ def writeLog(text):
 # Entry point of the program
 if __name__ == '__main__':
     writeLog(f"Program start")
-    EXECUTION_PERIOD_S = 10.0
+    EXECUTION_PERIOD_S = 60.0 * 10.0
 
     # Network measumenet queue
     queue_size = 95
