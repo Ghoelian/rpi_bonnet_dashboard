@@ -10,6 +10,7 @@ sys.path.insert(1, "./lib")
 import epd2in7b
 
 speedtest_queue = []
+speedtest_delay = 60.0 * 10.0
 
 def draw_nubers_n_hexes(down_speed, up_speed, ping, canvas, font):
     writeLog(f"Begin drawing numbers")
@@ -36,6 +37,18 @@ def draw_nubers_n_hexes(down_speed, up_speed, ping, canvas, font):
     center = [start_base[0]-(5*scale), start_base[1]+radius[1]*math.sqrt(3)/2*5]
     canvas.polygon(generate_hexagon(center, radius), outline=0)
     writeLog(f"D:{down_speed} U:{up_speed} P:{ping}")
+
+    down = open("./live_results/down", "w+")
+    up = open("./live_results/up", "w+")
+    ping = open("./live_results/ping", "w+")
+
+    down.write(f"{down_speed}")
+    up.write(f"{up_speed}")
+    ping.write(f"{ping}")
+
+    down.close()
+    up.close()
+    ping.close()
 
 def network_speed_test():
     writeLog(f"Begin network speed test")
@@ -106,7 +119,7 @@ def draw_network_graph(xy, hw, canvas, canvasRed):
     writeLog(f"Drawing current queue to graph")
     for measurement in speedtest_queue:
         if (queue_draw_loc_x > xy[0] + hw[1] - 1):
-          writeLog(f"Graph full, popping first result")
+          writeLog("Graph full, popping first result")
           queue_draw_loc_x = 6
           speedtest_queue.pop(0)
 
@@ -126,14 +139,15 @@ def draw_network_graph(xy, hw, canvas, canvasRed):
           queue_draw_loc_x += 2
 
 def writeLog(text):
-  log = open("log.txt", "a+")
+  log = open("./log/log.txt", "a+")
   log.write(f"{datetime.now()} - {text}\r\n")
   log.close()
 
 # Entry point of the program
 if __name__ == '__main__':
-    writeLog(f"Program start")
-    EXECUTION_PERIOD_S = 60.0 * 10.0
+    writeLog("Program start")
+    writeLog(f"Speedtest delay is {speedtest_delay}")
+    EXECUTION_PERIOD_S = speedtest_delay
 
     # Network measumenet queue
     queue_size = 95
@@ -192,10 +206,14 @@ if __name__ == '__main__':
           epd.Clear()
           iterator = 0
 
+        writeLog("Start writing new image to display")
         epd.display(epd.getbuffer(image), epd.getbuffer(imageRed))
+        writeLog("Finish writing new image to display")
+
         iterator += 1
         time_to_sleep = EXECUTION_PERIOD_S - min((time.time() - starttime), EXECUTION_PERIOD_S)
         time.sleep(time_to_sleep)
         starttime = time.time()
         #draw_hex_load_indicator(True, draw)
         network_speed_test()
+
