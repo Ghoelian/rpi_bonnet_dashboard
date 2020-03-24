@@ -104,8 +104,6 @@ def draw_network_graph(xy, hw, canvas, canvasRed):
     queue_draw_loc_x = 6
 
     writeLog(f"Drawing current queue to graph")
-    writeLog(f"{speedtest_queue}")
-    writeLog(f"------------------------------")
     for measurement in speedtest_queue:
         if (queue_draw_loc_x > xy[0] + hw[1] - 1):
           writeLog(f"Graph full, popping first result")
