@@ -1,16 +1,19 @@
 from PIL import Image, ImageDraw, ImageFont
+import inspect
 import time
 import speedtest
 import math
 import sys
+from datetime import datetime
 sys.path.insert(1, "./lib")
 
 import epd2in7b
 
 speedtest_queue = []
 
-
 def draw_nubers_n_hexes(down_speed, up_speed, ping, canvas, font):
+    writeLog(f"Begin drawing numbers")
+
     scale = 2.7
 
     start_base = [height/2.0+30, 30]
@@ -32,9 +35,10 @@ def draw_nubers_n_hexes(down_speed, up_speed, ping, canvas, font):
     canvas.polygon(generate_hexagon(center, radius), outline=0)
     center = [start_base[0]-(5*scale), start_base[1]+radius[1]*math.sqrt(3)/2*5]
     canvas.polygon(generate_hexagon(center, radius), outline=0)
-
+    writeLog(f"D:{down_speed} U:{up_speed} P:{ping}")
 
 def network_speed_test():
+    writeLog(f"Begin network speed test")
     servers = []
 
     s = speedtest.Speedtest()
@@ -42,8 +46,9 @@ def network_speed_test():
     s.get_best_server()
     s.download()
     s.upload(pre_allocate=False)
-    print(f"{s.results.download}, {s.results.upload}, {s.results.ping}")
     speedtest_queue.append(s)
+
+    writeLog(f"Finish network speed test")
 
 def translate(value, leftMin, leftMax, rightMin, rightMax):
     # Figure out how 'wide' each range is
@@ -74,6 +79,8 @@ def get_text_start_for_hex(center, radius):
 
 
 def draw_network_graph(xy, hw, canvas, canvasRed):
+    writeLog(f"Begin drawing network graph")
+
     # Draw left bracket
     canvas.line([(xy[0] + 0, xy[1] + 0), (xy[0] + 5, xy[1] + 0)], width=1, fill=0)
     canvas.line([(xy[0] + 0, xy[1] + 0), (xy[0] + 0, xy[1] + hw[0])], width=1, fill=0)
@@ -88,11 +95,20 @@ def draw_network_graph(xy, hw, canvas, canvasRed):
     scale_max = sys.float_info.epsilon
 
     for measurement in speedtest_queue:
-        scale_max = max(measurement.results.download, scale_max)
+      if (measurement.results.upload > scale_max):
+        scale_max = measurement.results.upload
+
+      if (measurement.results.download > scale_max):
+        scale_max = measurement.results.download
 
     queue_draw_loc_x = 6
+
+    writeLog(f"Drawing current queue to graph")
+    writeLog(f"{speedtest_queue}")
+    writeLog(f"------------------------------")
     for measurement in speedtest_queue:
         if (queue_draw_loc_x > xy[0] + hw[1] - 1):
+          writeLog(f"Graph full, popping first result")
           queue_draw_loc_x = 6
           speedtest_queue.pop(0)
 
@@ -111,9 +127,15 @@ def draw_network_graph(xy, hw, canvas, canvasRed):
         if (queue_draw_loc_x <= xy[0] + hw[1] - 1):
           queue_draw_loc_x += 2
 
+def writeLog(text):
+  log = open("log.txt", "a+")
+  log.write(f"{datetime.now()} - {text}\r\n")
+  log.close()
+
 # Entry point of the program
 if __name__ == '__main__':
-    EXECUTION_PERIOD_S = 60.0 * 10.0
+    writeLog(f"Program start")
+    EXECUTION_PERIOD_S = 10.0
 
     # Network measumenet queue
     queue_size = 95
@@ -122,9 +144,12 @@ if __name__ == '__main__':
     counter = 10
     iterator = 0
 
+    writeLog("Initialising and clearing EPD Display")
     epd = epd2in7b.EPD()
     epd.init()
     epd.Clear()
+
+    writeLog("EPD Display cleared and ready")
 
     # Create blank image for drawing.
     # Make sure to create image with mode '1' for 1-bit color.
@@ -139,7 +164,7 @@ if __name__ == '__main__':
     drawRed = ImageDraw.Draw(imageRed)
 
     starttime = time.time() - EXECUTION_PERIOD_S
-    print(starttime)
+
     while True:
         download_string = "----"
         upload_string = "----"
@@ -147,6 +172,7 @@ if __name__ == '__main__':
 
         # Draw a black filled box to clear the image.
         draw.rectangle((0, 0, height, width), outline=1, fill=1)
+        drawRed.rectangle((0, 0, height, width), outline=1, fill=1)
 
         if (len(speedtest_queue) >= 1):
             last_measurement_results = speedtest_queue[len(speedtest_queue)-1].results
