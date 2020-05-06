@@ -4,7 +4,7 @@ import time
 import speedtest
 import math
 import sys
-from datetime import datetime
+import datetime
 sys.path.insert(1, "./lib")
 
 import epd2in7b
@@ -12,7 +12,7 @@ import epd2in7b
 speedtest_queue = []
 speedtest_delay = 60.0 * 10.0
 
-def draw_nubers_n_hexes(down_speed, up_speed, ping, canvas, font):
+def draw_nubers_n_hexes(down_speed, up_speed, ping, canvas, font, datetime, datetime_next):
     writeLog(f"Begin drawing numbers")
 
     scale = 2.7
@@ -32,11 +32,13 @@ def draw_nubers_n_hexes(down_speed, up_speed, ping, canvas, font):
     canvas.text(get_text_start_for_hex(center, radius), ping, font=font, fill=0)
     center = [start_base[0]+(20*scale)+(5*scale), start_base[1]+radius[1]*math.sqrt(3)/2*3]
     canvas.polygon(generate_hexagon(center, radius), outline=0)
+    canvas.text(get_text_start_for_hex(center, radius), datetime, font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 10), fill=0)
     center = [start_base[0]+(20*scale)+(5*scale), start_base[1]+radius[1]*math.sqrt(3)/2*5]
     canvas.polygon(generate_hexagon(center, radius), outline=0)
+    canvas.text(get_text_start_for_hex(center, radius), datetime_next, font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 10), fill=0)
     center = [start_base[0]-(5*scale), start_base[1]+radius[1]*math.sqrt(3)/2*5]
     canvas.polygon(generate_hexagon(center, radius), outline=0)
-    writeLog(f"D:{down_speed} U:{up_speed} P:{ping}")
+    writeLog(f"D:{down_speed} U:{up_speed} P:{ping}, C:{datetime}, N:{datetime_next}")
 
     down_file = open("./live_results/down", "w+")
     up_file = open("./live_results/up", "w+")
@@ -140,7 +142,7 @@ def draw_network_graph(xy, hw, canvas, canvasRed):
 
 def writeLog(text):
   log = open("./log/log.txt", "a+")
-  log.write(f"{datetime.now()} - {text}\r\n")
+  log.write(f"{datetime.datetime.now()} - {text}\r\n")
   log.close()
 
 # Entry point of the program
@@ -198,7 +200,12 @@ if __name__ == '__main__':
             if last_measurement_results.ping > 0.0:
                 ping_string = '{0:.0f}'.format(last_measurement_results.ping)
 
-        draw_nubers_n_hexes(download_string, upload_string, ping_string, draw, fnt)
+        current_time = datetime.datetime.now().strftime("%H:%M")
+        next_time = datetime.datetime.now() + datetime.timedelta(seconds=speedtest_delay)
+        next_time_hrs = next_time.strftime("%H:%M")
+
+        draw_nubers_n_hexes(download_string, upload_string, ping_string, draw, fnt, current_time, next_time_hrs)
+
         draw_network_graph([5, 5], [width - 10, queue_size - 2], draw, drawRed)
         #draw_hex_load_indicator(False, draw)
 
@@ -216,4 +223,3 @@ if __name__ == '__main__':
         starttime = time.time()
         #draw_hex_load_indicator(True, draw)
         network_speed_test()
-
