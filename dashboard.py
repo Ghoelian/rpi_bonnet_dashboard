@@ -5,6 +5,7 @@ import speedtest
 import math
 import sys
 import datetime
+import requests
 sys.path.insert(1, "./lib")
 
 import epd2in7b
@@ -206,7 +207,13 @@ if __name__ == '__main__':
 
         draw_nubers_n_hexes(download_string, upload_string, ping_string, draw, fnt, current_time, next_time_hrs)
 
-        draw_network_graph([5, 5], [width - 10, queue_size - 2], draw, drawRed)
+	try:
+		requests.get(url="https://shortener.julianvos.nl/networkSpeed",
+			params={'up': upload_string, 'down': download_string, 'ping': ping_string, 'time': current_time})
+	except requests.exceptions.RequestException as e:
+		print("Sending request failed: " + e)
+
+	draw_network_graph([5, 5], [width - 10, queue_size - 2], draw, drawRed)
         #draw_hex_load_indicator(False, draw)
 
         if (iterator >= counter):
